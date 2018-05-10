@@ -15,7 +15,7 @@ public abstract class AbstractVectorModel implements VectorModel {
 	elements = new ArrayList<>();
     }
 
-    public Vector<VectorModel.Listener> getListeners() {
+    public Vector getListeners() {
 	return listeners;
     }
 

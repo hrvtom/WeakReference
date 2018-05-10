@@ -37,7 +37,7 @@ public class DefaultVectorModel extends AbstractVectorModel {
 
 	System.out.println("Press ENTER to manually clear the app, wait some time");
 	in.nextLine();
-	// model.getListeners().clear(); // even without this model i garbage
+	// model.getListeners().clear(); // even without this model is garbage
 	// collected
 	model = null;
 	System.gc();

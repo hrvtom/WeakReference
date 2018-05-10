@@ -17,6 +17,14 @@ import java.util.Scanner;
 
 public class WeakVectorModel1 extends AbstractVectorModel {
 
+    /**
+     * this doesn't work since JFrames are not released at .dispose(); reference
+     * to JFrames is kept by JVM. so Listener's reference is present in JFrame
+     * and WeakReference
+     * 
+     * @author etkhrto
+     *
+     */
     public static void main(String[] args) {
 
 	Scanner in = new Scanner(System.in);
@@ -55,7 +63,7 @@ public class WeakVectorModel1 extends AbstractVectorModel {
 
 	System.out.println("Press ENTER to manually clear the app, wait some time");
 	in.nextLine();
-	// model.getListeners().clear(); // even without this model i garbage
+	// model.getListeners().clear(); // even without this model is garbage
 	// collected
 	model = null;
 	System.gc();
