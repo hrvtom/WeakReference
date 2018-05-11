@@ -16,15 +16,6 @@ import java.util.Scanner;
  */
 public class WeakVectorModel3 extends AbstractVectorModel {
 
-    /**
-     * this doesn't work since JFrames are not released at .dispose(); reference
-     * to JFrames is kept by JVM. so Listener's reference is present in JFrame
-     * and WeakReference
-     * 
-     * @author etkhrto
-     *
-     */
-
     private ReferenceQueue queue;
 
     public WeakVectorModel3() {
@@ -42,14 +33,11 @@ public class WeakVectorModel3 extends AbstractVectorModel {
 	model.addElement(str1);
 	model.addElement(str2);
 
-	VectorListFrame vlf1 = new VectorListFrame(model, "Frame 1");
-	VectorListFrame vlf2 = new VectorListFrame(model, "Frame 2");
-	VectorListFrame vlf3 = new VectorListFrame(model, "Frame 3");
-	vlf1.setVisible(true);
-	vlf2.setVisible(true);
-	vlf3.setVisible(true);
+	new VectorListFrame(model, "Frame 1").setVisible(true);
+	new VectorListFrame(model, "Frame 2").setVisible(true);
+	new VectorListFrame(model, "Frame 3").setVisible(true);
 
-	System.out.println("Press ENTER to add text");
+	System.out.println("Press ENTER to continue");
 	in.nextLine();
 
 	String str3 = "Adding some more";
@@ -63,10 +51,17 @@ public class WeakVectorModel3 extends AbstractVectorModel {
 	in.nextLine();
 	System.gc();
 
-	System.out.println("Press ENTER to add some more text");
+	System.out.println("Press ENTER to add some more");
 	in.nextLine();
-	String str4 = "Adding some more and more";
-	model.addElement(str4);
+	model.addElement("Adding some more and more");
+
+	System.out.println("Close some windows, press ENTER to continue");
+	in.nextLine();
+	System.gc();
+
+	System.out.println("Press ENTER to remove some elements");
+	in.nextLine();
+	model.removeElement(str2);
 
 	System.out.println("Press ENTER to manually clear the app, wait some time");
 	in.nextLine();
@@ -82,6 +77,7 @@ public class WeakVectorModel3 extends AbstractVectorModel {
     private void cleanUp() {
 	WeakReference wr = (WeakReference) queue.poll();
 	while (wr != null) {
+	    System.out.println("Gc did it's job");
 	    listeners.removeElement(wr);
 	    wr = (WeakReference) queue.poll();
 	}
@@ -117,16 +113,7 @@ public class WeakVectorModel3 extends AbstractVectorModel {
     @Override
     protected void fireElementRemoved(Object object) {
 	cleanUp();
-	VectorModel.Event e = null;
-	int size = listeners.size();
-	System.out.println("Listeners:" + size);
-	for (int i = 0; i < size;) {
-	    Listener l = (Listener) ((WeakReference) getListeners().elementAt(i)).get();
-	    if (e == null)
-		e = new VectorModel.Event(this, object);
-	    l.elementRemoved(e);
-	    i++;
-	}
+	super.fireElementRemoved(object);
     }
 
     /*
@@ -137,16 +124,12 @@ public class WeakVectorModel3 extends AbstractVectorModel {
     @Override
     protected void fireElementAdded(Object object) {
 	cleanUp();
-	VectorModel.Event e = null;
-	int size = listeners.size();
-	System.out.println("Listeners:" + size);
-	for (int i = 0; i < size;) {
-	    Listener l = (Listener) ((WeakReference) getListeners().elementAt(i)).get();
-	    if (e == null)
-		e = new VectorModel.Event(this, object);
-	    l.elementAdded(e);
-	    i++;
-	}
+	super.fireElementAdded(object);
+    }
+
+    @Override
+    protected Listener getListener(int i) {
+	return (Listener) ((WeakReference) listeners.elementAt(i)).get();
     }
 
 }

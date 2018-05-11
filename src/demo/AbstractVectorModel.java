@@ -61,7 +61,7 @@ public abstract class AbstractVectorModel implements VectorModel {
 	for (int i = 0; i < size; i++) {
 	    if (e == null)
 		e = new VectorModel.Event(this, object);
-	    ((VectorModel.Listener) listeners.elementAt(i)).elementRemoved(e);
+	    ((Listener) getListener(i)).elementRemoved(e);
 	}
 
     }
@@ -73,8 +73,10 @@ public abstract class AbstractVectorModel implements VectorModel {
 	for (int i = 0; i < size; i++) {
 	    if (e == null)
 		e = new VectorModel.Event(this, object);
-	    ((VectorModel.Listener) listeners.elementAt(i)).elementAdded(e);
+	    ((Listener) getListener(i)).elementAdded(e);
 	}
     }
+
+    protected abstract Listener getListener(int i);
 
 }

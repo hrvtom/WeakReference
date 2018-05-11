@@ -14,12 +14,9 @@ public class DefaultVectorModel extends AbstractVectorModel {
 	model.addElement(str1);
 	model.addElement(str2);
 
-	VectorListFrame vlf1 = new VectorListFrame(model, "Frame 1");
-	VectorListFrame vlf2 = new VectorListFrame(model, "Frame 2");
-	VectorListFrame vlf3 = new VectorListFrame(model, "Frame 3");
-	vlf1.setVisible(true);
-	vlf2.setVisible(true);
-	vlf3.setVisible(true);
+	new VectorListFrame(model, "Frame 1").setVisible(true);
+	new VectorListFrame(model, "Frame 2").setVisible(true);
+	new VectorListFrame(model, "Frame 3").setVisible(true);
 
 	System.out.println("Press ENTER to continue");
 	in.nextLine();
@@ -54,6 +51,11 @@ public class DefaultVectorModel extends AbstractVectorModel {
     protected void finalize() throws Throwable {
 	System.out.println("Finalizing DefaultVectorModel");
 	super.finalize();
+    }
+
+    @Override
+    protected Listener getListener(int i) {
+	return (Listener) listeners.elementAt(i);
     }
 
 }

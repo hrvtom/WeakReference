@@ -72,17 +72,14 @@ public class ThreadedVectorModel extends AbstractVectorModel {
 	System.out.println("Main hello");
 	Scanner in = new Scanner(System.in);
 	ThreadedVectorModel model = new ThreadedVectorModel();
-	String str1 = "Hello World Weak1!";
+	String str1 = "Hello World Threaded!";
 	String str2 = "This is just the beggiing";
 	model.addElement(str1);
 	model.addElement(str2);
 
-	VectorListFrame vlf1 = new VectorListFrame(model, "Frame 1");
-	VectorListFrame vlf2 = new VectorListFrame(model, "Frame 2");
-	VectorListFrame vlf3 = new VectorListFrame(model, "Frame 3");
-	vlf1.setVisible(true);
-	vlf2.setVisible(true);
-	vlf3.setVisible(true);
+	new VectorListFrame(model, "Frame 1").setVisible(true);
+	new VectorListFrame(model, "Frame 2").setVisible(true);
+	new VectorListFrame(model, "Frame 3").setVisible(true);
 
 	System.out.println("Press ENTER to continue");
 	in.nextLine();
@@ -90,7 +87,7 @@ public class ThreadedVectorModel extends AbstractVectorModel {
 	String str3 = "Adding some more";
 	model.addElement(str3);
 
-	System.out.println("Close some windows, removing element,  press ENTER to continue");
+	System.out.println("Close some windows, press ENTER to continue");
 	in.nextLine();
 	model.removeElement(str1);
 
@@ -100,58 +97,27 @@ public class ThreadedVectorModel extends AbstractVectorModel {
 
 	System.out.println("Press ENTER to add some more");
 	in.nextLine();
-	String str4 = "Adding some more and more";
-	model.addElement(str4);
+	model.addElement("Adding some more and more");
+
+	System.out.println("Close some windows, press ENTER to continue");
+	in.nextLine();
+	System.gc();
+
+	System.out.println("Press ENTER to remove some elements");
+	in.nextLine();
+	model.removeElement(str2);
 
 	System.out.println("Press ENTER to manually clear the app, wait some time");
 	in.nextLine();
-
+	// model.getListeners().clear(); // even without this model is garbage
+	// collected
 	model.terminate();
 	model = null;
-	System.out.println("Main buy buy");
 	System.gc();
 
 	System.out.println("Wait, and than pres ENTER to exit");
 	in.nextLine();
 
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see demo.AbstractVectorModel#fireElementRemoved(java.lang.Object)
-     */
-    @Override
-    protected void fireElementRemoved(Object object) {
-	VectorModel.Event e = null;
-	int size = listeners.size();
-	System.out.println("Listeners:" + size);
-	for (int i = 0; i < size;) {
-	    Listener l = (Listener) ((WeakReference) getListeners().elementAt(i)).get();
-	    if (e == null)
-		e = new VectorModel.Event(this, object);
-	    l.elementRemoved(e);
-	    i++;
-	}
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see demo.AbstractVectorModel#fireElementAdded(java.lang.Object)
-     */
-    @Override
-    protected void fireElementAdded(Object object) {
-	VectorModel.Event e = null;
-	int size = listeners.size();
-	System.out.println("Listeners:" + size);
-	for (int i = 0; i < size;) {
-	    Listener l = (Listener) ((WeakReference) getListeners().elementAt(i)).get();
-	    if (e == null)
-		e = new VectorModel.Event(this, object);
-	    l.elementAdded(e);
-	    i++;
-	}
     }
 
     public void terminate() {
@@ -183,6 +149,11 @@ public class ThreadedVectorModel extends AbstractVectorModel {
     protected void finalize() throws Throwable {
 	System.out.println("Finalizing ThreadedVectorModel");
 	super.finalize();
+    }
+
+    @Override
+    protected Listener getListener(int i) {
+	return (Listener) ((WeakReference) listeners.elementAt(i)).get();
     }
 
 }

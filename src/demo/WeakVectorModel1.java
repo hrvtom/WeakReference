@@ -17,14 +17,6 @@ import java.util.Scanner;
 
 public class WeakVectorModel1 extends AbstractVectorModel {
 
-    /**
-     * this doesn't work since JFrames are not released at .dispose(); reference
-     * to JFrames is kept by JVM. so Listener's reference is present in JFrame
-     * and WeakReference
-     * 
-     * @author etkhrto
-     *
-     */
     public static void main(String[] args) {
 
 	Scanner in = new Scanner(System.in);
@@ -35,12 +27,9 @@ public class WeakVectorModel1 extends AbstractVectorModel {
 	model.addElement(str1);
 	model.addElement(str2);
 
-	VectorListFrame vlf1 = new VectorListFrame(model, "Frame 1");
-	VectorListFrame vlf2 = new VectorListFrame(model, "Frame 2");
-	VectorListFrame vlf3 = new VectorListFrame(model, "Frame 3");
-	vlf1.setVisible(true);
-	vlf2.setVisible(true);
-	vlf3.setVisible(true);
+	new VectorListFrame(model, "Frame 1").setVisible(true);
+	new VectorListFrame(model, "Frame 2").setVisible(true);
+	new VectorListFrame(model, "Frame 3").setVisible(true);
 
 	System.out.println("Press ENTER to continue");
 	in.nextLine();
@@ -58,8 +47,15 @@ public class WeakVectorModel1 extends AbstractVectorModel {
 
 	System.out.println("Press ENTER to add some more");
 	in.nextLine();
-	String str4 = "Adding some more and more";
-	model.addElement(str4);
+	model.addElement("Adding some more and more");
+
+	System.out.println("Close some windows, press ENTER to continue");
+	in.nextLine();
+	System.gc();
+
+	System.out.println("Press ENTER to remove some elements");
+	in.nextLine();
+	model.removeElement(str2);
 
 	System.out.println("Press ENTER to manually clear the app, wait some time");
 	in.nextLine();
@@ -138,6 +134,11 @@ public class WeakVectorModel1 extends AbstractVectorModel {
     protected void finalize() throws Throwable {
 	System.out.println("Finalizing WeakVectorModel1");
 	super.finalize();
+    }
+
+    @Override
+    protected Listener getListener(int i) {
+	return (Listener) ((WeakReference) listeners.elementAt(i)).get();
     }
 
 }
