@@ -1,46 +1,20 @@
 package demo;
 
-import java.util.Scanner;
+import java.util.Vector;
 
-public class DefaultVectorModel extends AbstractVectorModel {
+import demo.VectorModel.Listener;
+
+/**
+ * this Vector Model cann't clear visitors if they are not active any more
+ * 
+ * @author etkhrto
+ *
+ */
+public class DefaultVectorModel extends AbstractVectorModel<Listener> {
 
     public static void main(String[] args) {
 
-	Scanner in = new Scanner(System.in);
-
-	VectorModel model = new DefaultVectorModel();
-	String str1 = "Hello World!";
-	String str2 = "This is just the beggiing";
-	model.addElement(str1);
-	model.addElement(str2);
-
-	new VectorListFrame(model, "Frame 1").setVisible(true);
-	new VectorListFrame(model, "Frame 2").setVisible(true);
-	new VectorListFrame(model, "Frame 3").setVisible(true);
-
-	System.out.println("Press ENTER to continue");
-	in.nextLine();
-
-	String str3 = "Adding some more";
-	model.addElement(str3);
-
-	System.out.println("Close some windows, press ENTER to continue");
-	in.nextLine();
-	model.removeElement(str1);
-
-	System.out.println("Press ENTER to perform GC, wait for some time");
-	in.nextLine();
-	System.gc();
-
-	System.out.println("Press ENTER to manually clear the app, wait some time");
-	in.nextLine();
-	// model.getListeners().clear(); // even without this model is garbage
-	// collected
-	model = null;
-	System.gc();
-
-	System.out.println("Press ENTER to exit");
-	in.nextLine();
+	execute(new DefaultVectorModel());
 
     }
 
@@ -55,7 +29,24 @@ public class DefaultVectorModel extends AbstractVectorModel {
 
     @Override
     protected Listener getListener(int i) {
-	return (Listener) listeners.elementAt(i);
+	return listeners.elementAt(i);
+    }
+
+    @Override
+    public Vector<Listener> getListeners() {
+	return listeners;
+    }
+
+    @Override
+    public void addListener(Listener listener) {
+	listeners.add(listener);
+
+    }
+
+    @Override
+    public void removeListener(Listener listener) {
+	listeners.remove(listener);
+
     }
 
 }

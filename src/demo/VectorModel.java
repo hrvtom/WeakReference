@@ -31,7 +31,7 @@ public interface VectorModel {
 	public void elementRemoved(VectorModel.Event e);
     }
 
-    public Vector getListeners();
+    public Vector<Listener> getListeners();
 
     public void addElement(Object object);
 
