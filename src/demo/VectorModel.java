@@ -10,39 +10,39 @@ import java.util.Vector;
  * VectorModel.Listeners will be notified with a VectorModel.Event.
  */
 
-public interface VectorModel {
-    public static class Event extends EventObject {
+public interface VectorModel<T> {
+    public static class Event<T> extends EventObject {
 	private static final long serialVersionUID = -1;
-	private Object element;
+	private T element;
 
-	public Event(VectorModel model, Object element) {
+	public Event(VectorModel<T> model, T element) {
 	    super(model);
 	    this.element = element;
 	}
 
-	public Object getElement() {
+	public T getElement() {
 	    return element;
 	}
     }
 
-    public interface Listener extends EventListener {
-	public void elementAdded(VectorModel.Event e);
+    public interface Listener<T> extends EventListener {
+	public void elementAdded(VectorModel.Event<T> e);
 
-	public void elementRemoved(VectorModel.Event e);
+	public void elementRemoved(VectorModel.Event<T> e);
     }
 
-    public Vector<Listener> getListeners();
+    public Vector<Listener<T>> getListeners();
 
-    public void addElement(Object object);
+    public void addElement(T object);
 
-    public void removeElement(Object object);
+    public void removeElement(T object);
 
-    public Object elementAt(int index);
+    public T elementAt(int index);
 
     public int size();
 
-    public void addListener(VectorModel.Listener listener);
+    public void addListener(VectorModel.Listener<T> listener);
 
-    public void removeListener(VectorModel.Listener listener);
+    public void removeListener(VectorModel.Listener<T> listener);
 
 }

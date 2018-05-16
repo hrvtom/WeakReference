@@ -10,7 +10,7 @@ import demo.VectorModel.Listener;
  * @author etkhrto
  *
  */
-public class DefaultVectorModel extends AbstractVectorModel<Listener> {
+public class DefaultVectorModel extends AbstractVectorModel<Listener<String>, String> {
 
     public static void main(String[] args) {
 
@@ -28,23 +28,23 @@ public class DefaultVectorModel extends AbstractVectorModel<Listener> {
     }
 
     @Override
-    protected Listener getListener(int i) {
+    protected Listener<String> getListener(int i) {
 	return listeners.elementAt(i);
     }
 
     @Override
-    public Vector<Listener> getListeners() {
+    public Vector<Listener<String>> getListeners() {
 	return listeners;
     }
 
     @Override
-    public void addListener(Listener listener) {
+    public void addListener(Listener<String> listener) {
 	listeners.add(listener);
 
     }
 
     @Override
-    public void removeListener(Listener listener) {
+    public void removeListener(Listener<String> listener) {
 	listeners.remove(listener);
 
     }

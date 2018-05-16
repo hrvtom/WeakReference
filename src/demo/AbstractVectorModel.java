@@ -5,10 +5,10 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.Vector;
 
-public abstract class AbstractVectorModel<E> implements VectorModel {
+public abstract class AbstractVectorModel<E, T> implements VectorModel<T> {
 
     protected Vector<E> listeners;
-    private List<Object> elements;
+    private List<T> elements;
 
     public AbstractVectorModel() {
 	super();
@@ -16,7 +16,7 @@ public abstract class AbstractVectorModel<E> implements VectorModel {
 	elements = new ArrayList<>();
     }
 
-    public static void execute(AbstractVectorModel<?> model) {
+    public static void execute(AbstractVectorModel<?, String> model) {
 
 	System.out.println("Main hello");
 	Scanner in = new Scanner(System.in);
@@ -74,20 +74,20 @@ public abstract class AbstractVectorModel<E> implements VectorModel {
     }
 
     @Override
-    public void addElement(Object object) {
+    public void addElement(T object) {
 	elements.add(object);
 	fireElementAdded(object);
     }
 
     @Override
-    public void removeElement(Object object) {
+    public void removeElement(T object) {
 	elements.remove(object);
 	fireElementRemoved(object);
 
     }
 
     @Override
-    public Object elementAt(int index) {
+    public T elementAt(int index) {
 	return elements.get(index);
     }
 
@@ -96,31 +96,31 @@ public abstract class AbstractVectorModel<E> implements VectorModel {
 	return elements.size();
     }
 
-    protected void fireElementRemoved(Object object) {
-	VectorModel.Event e = null;
+    protected void fireElementRemoved(T object) {
+	VectorModel.Event<T> e = null;
 	int size = listeners.size();
 	System.out.println("Listeners before:" + size);
 	for (int i = 0; i < size; i++) {
 	    if (e == null)
-		e = new VectorModel.Event(this, object);
+		e = new VectorModel.Event<>(this, object);
 	    getListener(i).elementRemoved(e);
 	}
 	System.out.println("Listeners after:" + listeners.size());
     }
 
-    protected void fireElementAdded(Object object) {
-	VectorModel.Event e = null;
+    protected void fireElementAdded(T object) {
+	VectorModel.Event<T> e = null;
 	int size = listeners.size();
 	System.out.println("Listeners before:" + size);
 	for (int i = 0; i < size; i++) {
 	    if (e == null)
-		e = new VectorModel.Event(this, object);
+		e = new VectorModel.Event<>(this, object);
 	    getListener(i).elementAdded(e);
 	}
 	System.out.println("Listeners after:" + listeners.size());
     }
 
-    protected abstract Listener getListener(int i);
+    protected abstract Listener<T> getListener(int i);
 
     protected void terminate() {
 	// do nothing

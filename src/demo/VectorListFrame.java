@@ -27,30 +27,30 @@ public class VectorListFrame extends JFrame {
     // Commenting out discussed bellow..
     // private VectorModel vectorModel;
 
-    protected DefaultListModel listModel;
-    protected VectorModel.Listener modelListener = new VectorModel.Listener() {
+    protected DefaultListModel<String> listModel;
+    protected VectorModel.Listener<String> modelListener = new VectorModel.Listener<String>() {
 
 	@Override
-	public void elementAdded(Event e) {
+	public void elementAdded(Event<String> e) {
 	    System.out.println(VectorListFrame.this.getTitle() + " element added");
 	    listModel.addElement(e.getElement());
 	}
 
 	@Override
-	public void elementRemoved(Event e) {
+	public void elementRemoved(Event<String> e) {
 	    System.out.println(VectorListFrame.this.getTitle() + " element removed");
 	    listModel.removeElement(e.getElement());
 	}
     };
 
-    public VectorListFrame(VectorModel vectorModel, String name) {
+    public VectorListFrame(VectorModel<String> vectorModel, String name) {
 	super(name);
 	setSize(200, 200);
 	setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 	synchronized (VectorListFrame.class) {
 	    nFrames++;
 	}
-	listModel = new DefaultListModel();
+	listModel = new DefaultListModel<>();
 	int size = vectorModel.size();
 	for (int i = 0; i < size; i++) {
 	    listModel.addElement(vectorModel.elementAt(i));

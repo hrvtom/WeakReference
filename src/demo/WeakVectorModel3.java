@@ -15,7 +15,7 @@ import java.lang.ref.WeakReference;
  */
 public class WeakVectorModel3 extends AbstractWeakVectorModel {
 
-    private ReferenceQueue<Listener> queue;
+    private ReferenceQueue<Listener<String>> queue;
 
     public WeakVectorModel3() {
 	super();
@@ -43,8 +43,8 @@ public class WeakVectorModel3 extends AbstractWeakVectorModel {
      * @see demo.WeakVectorModel1#addListener(demo.VectorModel.Listener)
      */
     @Override
-    public void addListener(Listener listener) {
-	WeakReference<Listener> wr = new WeakReference<>(listener, queue);
+    public void addListener(Listener<String> listener) {
+	WeakReference<Listener<String>> wr = new WeakReference<>(listener, queue);
 	listeners.addElement(wr);
     }
 
@@ -65,7 +65,7 @@ public class WeakVectorModel3 extends AbstractWeakVectorModel {
      * @see demo.AbstractVectorModel#fireElementRemoved(java.lang.Object)
      */
     @Override
-    protected void fireElementRemoved(Object object) {
+    protected void fireElementRemoved(String object) {
 	cleanUp();
 	super.fireElementRemoved(object);
     }
@@ -76,7 +76,7 @@ public class WeakVectorModel3 extends AbstractWeakVectorModel {
      * @see demo.AbstractVectorModel#fireElementAdded(java.lang.Object)
      */
     @Override
-    protected void fireElementAdded(Object object) {
+    protected void fireElementAdded(String object) {
 	cleanUp();
 	super.fireElementAdded(object);
     }

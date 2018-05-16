@@ -20,7 +20,7 @@ import java.lang.ref.WeakReference;
  */
 public class ThreadedVectorModel extends AbstractWeakVectorModel {
 
-    private ReferenceQueue<Listener> queue;
+    private ReferenceQueue<Listener<String>> queue;
     private Thread cleanUpThread;
 
     public ThreadedVectorModel() {
@@ -79,8 +79,8 @@ public class ThreadedVectorModel extends AbstractWeakVectorModel {
      * @see demo.WeakVectorModel1#addListener(demo.VectorModel.Listener)
      */
     @Override
-    public void addListener(Listener listener) {
-	WeakReference<Listener> wr = new WeakReference<>(listener, queue);
+    public void addListener(Listener<String> listener) {
+	WeakReference<Listener<String>> wr = new WeakReference<>(listener, queue);
 	listeners.addElement(wr);
     }
 

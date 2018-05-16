@@ -16,20 +16,20 @@ public class WeakVectorModel1 extends AbstractWeakVectorModel {
      * @see demo.AbstractVectorModel#fireElementRemoved(java.lang.Object)
      */
     @Override
-    protected void fireElementRemoved(Object object) {
-	VectorModel.Event e = null;
+    protected void fireElementRemoved(String object) {
+	VectorModel.Event<String> e = null;
 	int size = listeners.size();
 	System.out.println("Listeners before:" + size);
 	for (int i = 0; i < size;) {
-	    WeakReference<Listener> wr = listeners.get(i);
-	    Listener l = wr.get();
+	    WeakReference<Listener<String>> wr = listeners.get(i);
+	    Listener<String> l = wr.get();
 	    if (l == null) {
 		System.out.println("GC did it's job, removing listener");
 		listeners.remove(wr);
 		size--;
 	    } else {
 		if (e == null)
-		    e = new VectorModel.Event(this, object);
+		    e = new VectorModel.Event<String>(this, object);
 		l.elementRemoved(e);
 		i++;
 	    }
@@ -43,20 +43,20 @@ public class WeakVectorModel1 extends AbstractWeakVectorModel {
      * @see demo.AbstractVectorModel#fireElementAdded(java.lang.Object)
      */
     @Override
-    protected void fireElementAdded(Object object) {
-	VectorModel.Event e = null;
+    protected void fireElementAdded(String object) {
+	VectorModel.Event<String> e = null;
 	int size = listeners.size();
 	System.out.println("Listeners before:" + size);
 	for (int i = 0; i < size;) {
-	    WeakReference<Listener> wr = listeners.get(i);
-	    Listener l = wr.get();
+	    WeakReference<Listener<String>> wr = listeners.get(i);
+	    Listener<String> l = wr.get();
 	    if (l == null) {
 		System.out.println("GC did it's job, removing listener");
 		listeners.remove(wr);
 		size--;
 	    } else {
 		if (e == null)
-		    e = new VectorModel.Event(this, object);
+		    e = new VectorModel.Event<String>(this, object);
 		l.elementAdded(e);
 		i++;
 	    }

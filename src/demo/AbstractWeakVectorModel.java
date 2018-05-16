@@ -5,7 +5,7 @@ import java.util.Vector;
 
 import demo.VectorModel.Listener;
 
-public abstract class AbstractWeakVectorModel extends AbstractVectorModel<WeakReference<Listener>> {
+public abstract class AbstractWeakVectorModel extends AbstractVectorModel<WeakReference<Listener<String>>, String> {
 
     /*
      * (non-Javadoc)
@@ -13,9 +13,9 @@ public abstract class AbstractWeakVectorModel extends AbstractVectorModel<WeakRe
      * @see demo.VectorModel#getListeners()
      */
     @Override
-    public Vector<Listener> getListeners() {
-	Vector<Listener> vect = new Vector<>();
-	for (WeakReference<Listener> wr : listeners) {
+    public Vector<Listener<String>> getListeners() {
+	Vector<Listener<String>> vect = new Vector<>();
+	for (WeakReference<Listener<String>> wr : listeners) {
 	    vect.addElement(wr.get());
 	}
 	return vect;
@@ -27,8 +27,8 @@ public abstract class AbstractWeakVectorModel extends AbstractVectorModel<WeakRe
      * @see demo.VectorModel#addListener(demo.VectorModel.Listener)
      */
     @Override
-    public void addListener(Listener listener) {
-	WeakReference<Listener> wr = new WeakReference<>(listener);
+    public void addListener(Listener<String> listener) {
+	WeakReference<Listener<String>> wr = new WeakReference<>(listener);
 	listeners.addElement(wr);
     }
 
@@ -38,8 +38,8 @@ public abstract class AbstractWeakVectorModel extends AbstractVectorModel<WeakRe
      * @see demo.VectorModel#removeListener(demo.VectorModel.Listener)
      */
     @Override
-    public void removeListener(Listener listener) {
-	WeakReference<Listener> wr = new WeakReference<>(listener);
+    public void removeListener(Listener<String> listener) {
+	WeakReference<Listener<String>> wr = new WeakReference<>(listener);
 	System.out.println("Listener Removed " + listeners.removeElement(wr));
     }
 
@@ -49,7 +49,7 @@ public abstract class AbstractWeakVectorModel extends AbstractVectorModel<WeakRe
      * @see demo.AbstractVectorModel#getListener(int)
      */
     @Override
-    protected Listener getListener(int i) {
+    protected Listener<String> getListener(int i) {
 	return listeners.elementAt(i).get();
     }
 }
